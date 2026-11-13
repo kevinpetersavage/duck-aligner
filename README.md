@@ -90,6 +90,33 @@ duck-aligner scan sample.fastq.gz ACTGCAACTAGCTAGCTAGCTAGTCGATCGATCGATCGATCGATCG
 duck-aligner query "SELECT count(*) FROM read_fastq('sample.fastq') WHERE align_score(sequence, 'ACTGCA') > 0.8"
 ```
 
+## Try a public 1000 Genomes CRAM
+
+The demo reads a small indexed region from the public HG00419 high-coverage
+GRCh38 CRAM, converts up to 100 reads to a temporary FASTQ, and aligns them
+against that region with DuckDB. It uses HTTP range requests for the CRAM, so it
+does not download the 40 GB file. The script downloads the chr20 reference
+sequence from UCSC (about 20 MB compressed) unless `--reference` is supplied.
+
+```bash
+poetry install --extras cram
+poetry run python scripts/try_1000_genomes_cram.py
+```
+
+By default, the script uses `chr20:10000000-10002000`. You can change the
+region, read limit, or CRAM/index URLs:
+
+```bash
+poetry run python scripts/try_1000_genomes_cram.py \
+  --region chr20:10000000-10002000 \
+  --max-reads 100 \
+  --reference /path/to/GRCh38.fa
+```
+
+The CRAM and CRAI are from the
+[1000 Genomes high-coverage alignment index](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/1000genomes.high_coverage.GRCh38DH.alignment.index).
+For another sample, pass both `--cram` and `--crai`.
+
 ---
 
 ## Running Tests

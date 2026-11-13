@@ -15,9 +15,13 @@ python = "^3.10"
 duckdb = ">=1.0.0"
 parasail = ">=1.3.4"
 edlib = ">=1.3.9"
+pysam = { version = ">=0.23.3", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
+
+[tool.poetry.extras]
+cram = ["pysam"]
 
 [tool.poetry.scripts]
 duck-aligner = "duck_aligner.cli:main"
